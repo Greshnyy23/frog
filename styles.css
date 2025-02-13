@@ -1,0 +1,120 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background: url('new-space-background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #ffffff;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    transition: background 0.3s;
+}
+
+.container {
+    max-width: 800px;
+    background: rgba(10, 10, 10, 0.7);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 30px rgba(0, 255, 204, 1);
+}
+
+.title {
+    font-family: 'Orbitron', sans-serif;
+    color: #00ffcc;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.stats-grid {
+    display: flex;
+    justify-content: space-around;
+    margin: 15px 0;
+}
+
+.stat-item {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 10px;
+    flex: 1; 
+    margin: 0 10px;
+}
+
+.stat-title {
+    font-weight: bold;
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 999;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.timer {
+    margin-top: 15px;
+    color: #ffcc00;
+    font-weight: bold;
+}
+
+.upgrades-grid {
+    margin: 20px 0;
+}
+
+.quests-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.quest-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    margin: 5px 0;
+}
+
+.progress-container {
+    width: 100%;
+    background-color: rgba(50, 50, 50, 0.7);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 15px;
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+}
+
+.progress-bar {
+    height: 20px;
+    width: 0;
+    background: linear-gradient(to right, #00ffcc, #008f7e);
+    transition: width 0.4s ease-in-out;
+    border-radius: 5px;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 600px) {
+    .stats-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stat-item {
+        width: 90%;
+        margin-bottom: 10px;
+    }
+}

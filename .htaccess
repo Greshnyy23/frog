@@ -1,0 +1,2 @@
+php_value date.timezone Europe/Warsaw
+php_value display_errors Off

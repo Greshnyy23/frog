@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Tap Coin - Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 data-i18n="title_settings">Settings</h1>
+
+        <div class="navigation">
+            <h3 data-i18n="label_select_language">Select Language</h3>
+            <select id="language-select" class="language-select">
+                <option value="en" data-i18n="lang_en">English</option>
+                <option value="ru" data-i18n="lang_ru">Русский</option>
+                <option value="uk" data-i18n="lang_uk">Українська</option>
+                <option value="pl" data-i18n="lang_pl">Polski</option>
+            </select>
+        </div>
+
+        <div class="navigation">
+            <button class="back-button" id="reset-progress-btn">Reset Progress</button>
+            <button class="prestige-btn" id="prestige-btn">Prestige</button>
+        </div>
+
+        <div class="navigation">
+            <button class="back-button" onclick="goBack()">Go Back to Main</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
