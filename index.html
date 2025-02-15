@@ -1,60 +1,89 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Tap 4.0</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <title>Telegram Idle Clicker</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <!-- Использование CDN для подключения Babylon.js -->
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/babylon.gui.js"></script>
 </head>
 <body>
-    <audio id="background-music" loop src="background.mp3" preload="auto"></audio>
-    
-    <div class="container">
-        <div class="cyber-border">
-            <h1 class="title">NEXUS TAP v4.0</h1>
-            <div class="button-container">
-                <button id="theme-toggle" class="btn btn-secondary">🌘 Сменить тему</button>
-                <button id="prestige-button" class="btn btn-success">💰 Престиж</button>
-            </div>
-            <div id="story" class="story">
-                <h2>История:</h2>
-                <p>Забирайтесь в глубины Nexus, создавая свою энергию и исследуя невероятные нейронные узлы!</p>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <h3 class="stat-title">Энергия</h3>
-                    <div class="stat-value" id="coins">0</div>
-                </div>
-                <div class="stat-item">
-                    <h3 class="stat-title">Сила ядра</h3>
-                    <div class="stat-value" id="core-power">1</div>
-                </div>
-                <div class="stat-item">
-                    <h3 class="stat-title">Нейронные узлы</h3>
-                    <div class="stat-value" id="neuro-clicks">0</div>
-                </div>
-                <div class="stat-item">
-                    <h3 class="stat-title">Уровень</h3>
-                    <div class="stat-value" id="level">1</div>
-                </div>
-            </div>
-            <button class="btn btn-primary" id="harvest-button">АКТИВИРОВАТЬ КВАНТОВОЕ ЯДРО</button>
-            <div id="timer" class="timer">Следующий сбор через: <span id="timer-display">10</span> секунд</div>
-            <div id="upgrades-section" class="upgrades-grid"></div>
-            <div id="quests-section" class="quests-grid"></div>
-            <div id="notification" class="notification"></div>
-            <h2>Прогресс Матрицы</h2>
-            <div class="progress-container">
-                <div class="progress-bar" id="matrix-progress"></div>
-            </div>
-        </div>
-    </div>
+    <script>
+        // Основные переменные
+        let resourceCount = 0;
+        let resourcesPerSecond = 0;
+        let resourceIncrement = 1;
 
-    <script src="script.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        // Создание сцены
+        const canvas = document.createElement('canvas');
+        document.body.appendChild(canvas);
+        const engine = new BABYLON.Engine(canvas, true);
+
+        const createScene = function () {
+            const scene = new BABYLON.Scene(engine);
+            const camera = new BABYLON.ArcRotateCamera("camera", Math.PI / 2, Math.PI / 2, 10, BABYLON.Vector3.Zero(), scene);
+            camera.attachControl(canvas, true);
+
+            const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+            const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 10, height: 10 }, scene);
+
+            return scene;
+        };
+
+        const scene = createScene();
+
+        // GUI (интерфейс пользователя)
+        const advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+
+        // Текст для отображения ресурсов
+        const resourceText = new BABYLON.GUI.TextBlock();
+        resourceText.text = "Ресурсы: 0";
+        resourceText.color = "white";
+        resourceText.fontSize = 24;
+        resourceText.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        resourceText.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+        advancedTexture.addControl(resourceText);
+
+        // Кнопка для получения ресурсов
+        const button = new BABYLON.GUI.Button.CreateSimpleButton("getResources", "Получить ресурсы");
+        button.width = "200px";
+        button.height = "40px";
+        button.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+        button.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+        button.background = "green";
+        button.color = "white";
+        button.fontSize = 24;
+
+        button.onPointerUpObservable.add(() => {
+            resourceCount += resourceIncrement;
+            resourceText.text = "Ресурсы: " + resourceCount;
+        });
+
+        advancedTexture.addControl(button);
+
+        // Обновление ресурсов каждый кадр
+        engine.runRenderLoop(() => {
+            scene.render();
+            resourceCount += resourcesPerSecond / 60; // Увеличиваем ресурсы каждую секунду
+            resourceText.text = "Ресурсы: " + Math.floor(resourceCount); // Округляем до целого
+        });
+
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+    </script>
 </body>
 </html>
