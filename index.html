@@ -11,48 +11,34 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background: black; /* Фон для кеша на случай проблем с анимацией */
+            background: linear-gradient(135deg, #000428, #004e92);
         }
 
-        /* Анимация фона */
         .background {
             position: fixed;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #000428, #004e92);
-            animation: gradient 15s ease infinite;
-        }
-
-        @keyframes gradient {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+            opacity: 0.7; /* Полупрозрачный фон */
         }
 
         .ui-container {
             position: absolute;
             text-align: center;
             color: white;
-            font-family: Arial, sans-serif;
-            border: 2px solid #ffffff; /* Обрамление игрового функционала */
+            font-family: 'Arial', sans-serif;
+            border: 2px solid #ffffff;
             border-radius: 15px;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.5); /* Прозрачный фон для контейнера */
-            width: 300px; /* Ширина контейнера */
-            margin: auto; /* Центрирование контейнера */
-            top: 50%; /* Вертикальное центрирование */
-            transform: translateY(-50%); /* Смещение по вертикали */
+            background: rgba(0, 0, 0, 0.5);
+            width: 300px;
+            margin: auto;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Центрирование */
         }
 
-        /* Стили для кнопок */
         .button {
-            background: #4CAF50; /* Цвет кнопки */
+            background: #4CAF50;
             border: none;
             color: white;
             padding: 15px 32px;
@@ -64,9 +50,10 @@
             transition-duration: 0.4s;
             cursor: pointer;
             border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         .button:hover {
-            background-color: white; /* Цвет при наведении */
+            background-color: white;
             color: black;
         }
         .button-blue {
@@ -75,6 +62,22 @@
         .button-blue:hover {
             background-color: white;
             color: #007BFF;
+        }
+        
+        #progressBar {
+            width: 100%;
+            height: 20px;
+            background: #ccc;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        #progress {
+            height: 100%;
+            background: #4CAF50;
+            width: 0%;
+            transition: width 0.3s;
         }
     </style>
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
@@ -86,15 +89,22 @@
         <h1>Кликер Игра</h1>
         <p id="resourceText">Ресурсы: 0</p>
         <p id="upgradeText">Стоимость улучшения: 10</p>
+        <div id="progressBar">
+            <div id="progress"></div>
+        </div>
         <button id="getResources" class="button button-blue">Получить ресурсы</button>
         <button id="buyUpgrade" class="button">Купить улучшение</button>
     </div>
+    <audio id="clickSound" src="click.mp3" preload="auto"></audio>
+    <audio id="upgradeSound" src="upgrade.mp3" preload="auto"></audio>
 
     <script>
-        let resourceCount = 0; // Объявление переменной
+        let resourceCount = 0;
         let resourcesPerSecond = 0;
         let resourceIncrement = 1;
         let upgradeCost = 10; // Стоимость первого улучшения
+        const upgrades = 5; // Максимальное количество улучшений
+        let currentUpgradeLevel = 0; // Уровень улучшения
 
         // Создание сцены
         const canvas = document.createElement('canvas');
@@ -128,21 +138,38 @@
         function updateResourceText() {
             document.getElementById("resourceText").innerText = "Ресурсы: " + resourceCount;
             document.getElementById("upgradeText").innerText = "Стоимость улучшения: " + upgradeCost;
+            updateProgressBar();
+        }
+
+        // Обновление прогресс-бара
+        function updateProgressBar() {
+            const progress = document.getElementById("progress");
+            const percentage = (currentUpgradeLevel / upgrades) * 100;
+            progress.style.width = percentage + "%";
         }
 
         // Кнопка для получения ресурсов
         document.getElementById("getResources").addEventListener("click", () => {
             resourceCount += resourceIncrement;
             updateResourceText();
+
+            // Воспроизведение звука
+            document.getElementById("clickSound").play();
         });
 
         // Кнопка для улучшения
         document.getElementById("buyUpgrade").addEventListener("click", () => {
-            if (resourceCount >= upgradeCost) {
+            if (resourceCount >= upgradeCost && currentUpgradeLevel < upgrades) {
                 resourceCount -= upgradeCost;
                 resourceIncrement += 1; // Увеличиваем количество ресурсов за клик
                 upgradeCost = Math.floor(upgradeCost * 1.5); // Увеличиваем стоимость улучшения
+                currentUpgradeLevel++;
                 updateResourceText();
+
+                // Воспроизведение звука улучшения
+                document.getElementById("upgradeSound").play();
+            } else if (currentUpgradeLevel >= upgrades) {
+                alert("Максимальный уровень улучшений достигнут!");
             } else {
                 alert("Недостаточно ресурсов для улучшения!");
             }
