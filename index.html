@@ -16,7 +16,7 @@
             height: 100%;
         }
     </style>
-    <!-- Использование CDN для подключения Babylon.js -->
+    <!-- Подключение библиотек Babylon.js и GUI -->
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
     <script src="https://cdn.babylonjs.com/babylon.gui.js"></script>
 </head>
@@ -78,7 +78,7 @@
         engine.runRenderLoop(() => {
             scene.render();
             resourceCount += resourcesPerSecond / 60; // Увеличиваем ресурсы каждую секунду
-            resourceText.text = "Ресурсы: " + Math.floor(resourceCount); // Округляем до целого
+            resourceText.text = "Ресурсы: " + Math.floor(resourceCount); // Округляем до целого числа
         });
 
         window.addEventListener("resize", function () {
