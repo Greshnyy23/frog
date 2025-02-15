@@ -16,9 +16,9 @@
             height: 100%;
         }
     </style>
-    <!-- Подключение библиотек Babylon.js и GUI -->
+    <!-- Подключение библиотек Babylon.js и GUI из CDN -->
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
-    <script src="https://cdn.babylonjs.com/babylon.gui.js"></script>
+    <script src="https://cdn.babylonjs.com/gui/babylon.gui.js"></script>
 </head>
 <body>
     <script>
@@ -37,7 +37,9 @@
             const camera = new BABYLON.ArcRotateCamera("camera", Math.PI / 2, Math.PI / 2, 10, BABYLON.Vector3.Zero(), scene);
             camera.attachControl(canvas, true);
 
+            // Освещение
             const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+            // Создание земли
             const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 10, height: 10 }, scene);
 
             return scene;
