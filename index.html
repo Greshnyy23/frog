@@ -14,29 +14,23 @@
             background: black; /* Фон для кеша на случай проблем с анимацией */
         }
 
-        /* Анимация фона */
         .background {
             position: fixed;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #000428, #004e92);
-            animation: gradient 15s ease infinite;
+            background: url('https://cdn.pixabay.com/photo/2016/06/29/10/06/space-1489509_1280.jpg') no-repeat center center;
+            background-size: cover;
+            opacity: 0.7; /* Полупрозрачный фон */
+            animation: moveBackground 30s linear infinite;
         }
 
-        @keyframes gradient {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+        @keyframes moveBackground {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
         }
 
         .ui-container {
-            position: relative;
+            position: absolute;
             text-align: center;
             color: white;
             font-family: Arial, sans-serif;
@@ -91,7 +85,7 @@
     </div>
 
     <script>
-        let resourceCount = 0;
+        let resourceCount = 0; // Объявление переменной здесь
         let resourcesPerSecond = 0;
         let resourceIncrement = 1;
         let upgradeCost = 10; // Стоимость первого улучшения
